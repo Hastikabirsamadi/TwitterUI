@@ -115,6 +115,22 @@ public class SearchController implements Initializable {
         stage.show();
     }
 
+    public void backToMainPage(MouseEvent event) throws IOException, ClassNotFoundException {
+        Client.out.writeObject("0");
+        Parent root = FXMLLoader.load(Objects.requireNonNull(Client.class.getResource("MainPage.fxml")));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        try {
+            ((MainPageController) root.getUserData()).showTimeline(Client.timelineReceiver());
+        } catch (NullPointerException e) {
+            System.out.println("koomak !");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        stage.show();
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
